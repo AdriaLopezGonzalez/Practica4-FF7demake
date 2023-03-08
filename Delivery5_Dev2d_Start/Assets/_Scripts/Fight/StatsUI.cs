@@ -31,8 +31,6 @@ public class StatsUI : MonoBehaviour
         UpdateStats(fighter);
     }
 
-     
-
     private void OnStatsChange()
     {
         UpdateStats(_fighter);

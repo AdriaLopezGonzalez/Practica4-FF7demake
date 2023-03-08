@@ -25,6 +25,19 @@ public class ActionButtonController : MonoBehaviour
     }
 
     
+    public void SetFighterButtons(Fighter currentFighter)
+    {
+        PossibleCommands = currentFighter.PossibleCommands;
+
+        for (int i = 0; i < PossibleCommands.Count; i++)
+        {
+            ActionButton button = Instantiate(ActionButtonPrefab);
+            button.Init(PossibleCommands[i], this);
+            button.transform.SetParent(_canvasGroup.transform);
+        }
+
+        Show();
+    }
 
     internal void ChooseTarget(Entity activeEntity)
     {
@@ -52,6 +65,6 @@ public class ActionButtonController : MonoBehaviour
     
     public void OnButtonPressed(FightCommandTypes fightCommandType)
     {
-        
+        CombatManager.DoAction(fightCommandType);
     }
 }

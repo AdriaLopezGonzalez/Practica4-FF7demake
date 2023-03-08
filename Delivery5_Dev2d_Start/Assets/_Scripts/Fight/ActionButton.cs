@@ -31,8 +31,8 @@ public class ActionButton : MonoBehaviour, IPointerClickHandler
 
     public void Init(FightCommandTypes type, ActionButtonController colorButtonController)
     {
-        // _color = color;
-        // _image.color = _color;
+        _color = Color.white;
+        _image.color = _color;
         _type = type;
          _colorButtonController = colorButtonController;
         _text.text = type.ToString(); ;

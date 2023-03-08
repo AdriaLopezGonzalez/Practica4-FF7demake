@@ -27,16 +27,17 @@ public class CombatManager : MonoBehaviour
 
     void StartBattle()
     {
-       
-    
+        Fighter currentFighter = EntityManager.ActiveEntity as Fighter;
+        Stats.SetEntity(currentFighter);
+        ActionButtonController.SetFighterButtons(currentFighter);
     }
 
     public void DoAction(FightCommandTypes commandType)
     {
-       
+        //ChooseTarget(manera de conectar command type con fight commands);
 
     }
-    /*
+    
     private void ChooseTarget(FightCommand _currentCommand)
     {
         var targetTypes = _currentCommand.PossibleTargets;
@@ -66,7 +67,7 @@ public class CombatManager : MonoBehaviour
         ActionButtonController.ChooseTarget(EntityManager.ActiveEntity);
         TargetChooser.StartChoose(possibleTargets);
     }
-    */
+    
     private void DoAction(Entity actor, Entity target, FightCommandTypes type)
     {
         
