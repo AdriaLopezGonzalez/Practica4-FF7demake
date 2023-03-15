@@ -35,9 +35,28 @@ public class CombatManager : MonoBehaviour
     public void DoAction(FightCommandTypes commandType)
     {
         Fighter ActionDoer = EntityManager.ActiveEntity as Fighter;
-        //DENTRO SWITCH     
-        AttackCommand attackCommand = new AttackCommand();
-        ChooseTarget(attackCommand);
+        //DENTRO SWITCH
+        FightCommand doingCommand = null;
+
+        switch (commandType)
+        {
+            case FightCommandTypes.Attack:
+                doingCommand = new AttackCommand();
+                break;
+            case FightCommandTypes.BoostAttack:
+                doingCommand = new BoostAttackCommand();
+                break;
+            case FightCommandTypes.BoostDefense:
+                doingCommand = new BoostDefenseCommand();
+                break;
+            case FightCommandTypes.Heal:
+                doingCommand = new HealCommand();
+                break;
+            case FightCommandTypes.Shield:
+                doingCommand = new ShieldCommand();
+                break;
+        }
+        ChooseTarget(doingCommand);
         /*foreach (FightCommand c in ActionDoer.PossibleCommands)
         {
 
