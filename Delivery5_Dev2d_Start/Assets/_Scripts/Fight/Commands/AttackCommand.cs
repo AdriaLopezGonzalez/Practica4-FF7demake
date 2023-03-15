@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 public class AttackCommand : FightCommand
 {
-    private void Start()
+    public AttackCommand()
     {
         _type = FightCommandTypes.Attack;
         PossibleTargets = TargetTypes.Enemy;

@@ -35,6 +35,9 @@ public class CombatManager : MonoBehaviour
     public void DoAction(FightCommandTypes commandType)
     {
         Fighter ActionDoer = EntityManager.ActiveEntity as Fighter;
+        //DENTRO SWITCH     
+        AttackCommand attackCommand = new AttackCommand();
+        ChooseTarget(attackCommand);
         /*foreach (FightCommand c in ActionDoer.PossibleCommands)
         {
 
