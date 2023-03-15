@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FightCommand : MonoBehaviour, ICommand
+abstract class FightCommand : ICommand
 {
     public TargetTypes PossibleTargets;
     public FightCommandTypes _type;

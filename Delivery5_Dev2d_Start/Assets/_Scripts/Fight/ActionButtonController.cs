@@ -12,7 +12,7 @@ public class ActionButtonController : MonoBehaviour
 
     public CombatManager CombatManager;
 
-    private List<GameObject> CurrentButtons;
+    private List<GameObject> CurrentButtons = new List<GameObject>();
 
     private CanvasGroup _canvasGroup;
 
@@ -27,6 +27,12 @@ public class ActionButtonController : MonoBehaviour
     
     public void SetFighterButtons(Fighter currentFighter)
     {
+        foreach (GameObject b in CurrentButtons)
+        {
+            Destroy(b);
+        }
+        CurrentButtons.Clear();
+
         PossibleCommands = currentFighter.PossibleCommands;
 
         for (int i = 0; i < PossibleCommands.Count; i++)
@@ -34,6 +40,7 @@ public class ActionButtonController : MonoBehaviour
             ActionButton button = Instantiate(ActionButtonPrefab);
             button.Init(PossibleCommands[i], this);
             button.transform.SetParent(_canvasGroup.transform);
+            CurrentButtons.Add(button.gameObject);
         }
 
         Show();

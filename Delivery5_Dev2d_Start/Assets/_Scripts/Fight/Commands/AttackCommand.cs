@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 
-public class AttackCommand : FightCommand
+class AttackCommand : FightCommand
 {
     public AttackCommand()
     {
@@ -15,6 +15,7 @@ public class AttackCommand : FightCommand
 
     public override void Excecute()
     {
+        Debug.Log("PITOOOOOO");
     }
 
     public override void Undo()

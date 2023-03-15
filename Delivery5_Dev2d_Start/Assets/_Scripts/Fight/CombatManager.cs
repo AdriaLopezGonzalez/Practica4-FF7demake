@@ -11,7 +11,7 @@ public class CombatManager : MonoBehaviour
     public Invoker Invoker;
     public StatsUI Stats;
 
-    
+    private FightCommandTypes currentCommandType;
 
     // Start is called before the first frame update
     void Start()
@@ -34,40 +34,9 @@ public class CombatManager : MonoBehaviour
 
     public void DoAction(FightCommandTypes commandType)
     {
-        Fighter ActionDoer = EntityManager.ActiveEntity as Fighter;
         //DENTRO SWITCH
-        FightCommand doingCommand = null;
-
-        switch (commandType)
-        {
-            case FightCommandTypes.Attack:
-                doingCommand = new AttackCommand();
-                break;
-            case FightCommandTypes.BoostAttack:
-                doingCommand = new BoostAttackCommand();
-                break;
-            case FightCommandTypes.BoostDefense:
-                doingCommand = new BoostDefenseCommand();
-                break;
-            case FightCommandTypes.Heal:
-                doingCommand = new HealCommand();
-                break;
-            case FightCommandTypes.Shield:
-                doingCommand = new ShieldCommand();
-                break;
-        }
-        ChooseTarget(doingCommand);
-        /*foreach (FightCommand c in ActionDoer.PossibleCommands)
-        {
-
-        }
-
-        if (commandType == FightCommandTypes.Attack)
-        {
-            ChooseTarget(AttackCommand as FightCommand);
-        }
-        */
-        //ChooseTarget(manera de conectar command type con fight commands);
+        currentCommandType = commandType;
+        ChooseTarget(TypeToCommand(commandType));
 
     }
     
@@ -103,7 +72,8 @@ public class CombatManager : MonoBehaviour
     
     private void DoAction(Entity actor, Entity target, FightCommandTypes type)
     {
-        
+        TypeToCommand(type).Excecute();
+        NextTurn();
     }
 
     private void Undo()
@@ -114,7 +84,10 @@ public class CombatManager : MonoBehaviour
 
     public void NextTurn()
     {
-        
+        EntityManager.SetNextEntity();
+        Fighter currentFighter = EntityManager.ActiveEntity as Fighter;
+        Stats.SetEntity(currentFighter);
+        ActionButtonController.SetFighterButtons(currentFighter);
     }
 
     internal void TargetChosen(ISelectable entity)
@@ -124,6 +97,36 @@ public class CombatManager : MonoBehaviour
             Debug.LogError("Selected is not entity");
             return;
         }
+        else
+        {
+            DoAction(EntityManager.ActiveEntity, entity as Entity, currentCommandType);
+        }
      
+    }
+
+    private FightCommand TypeToCommand(FightCommandTypes type)
+    {
+        FightCommand doingCommand;
+
+        switch (type)
+        {
+            case FightCommandTypes.Attack:
+                doingCommand = new AttackCommand();
+                break;
+            case FightCommandTypes.BoostAttack:
+                doingCommand = new BoostAttackCommand();
+                break;
+            case FightCommandTypes.BoostDefense:
+                doingCommand = new BoostDefenseCommand();
+                break;
+            case FightCommandTypes.Heal:
+                doingCommand = new HealCommand();
+                break;
+            default:
+                doingCommand = new ShieldCommand();
+                break;
+        }
+
+        return doingCommand;
     }
 }
