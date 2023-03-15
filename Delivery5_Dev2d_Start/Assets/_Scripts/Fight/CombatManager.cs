@@ -34,6 +34,17 @@ public class CombatManager : MonoBehaviour
 
     public void DoAction(FightCommandTypes commandType)
     {
+        Fighter ActionDoer = EntityManager.ActiveEntity as Fighter;
+        /*foreach (FightCommand c in ActionDoer.PossibleCommands)
+        {
+
+        }
+
+        if (commandType == FightCommandTypes.Attack)
+        {
+            ChooseTarget(AttackCommand as FightCommand);
+        }
+        */
         //ChooseTarget(manera de conectar command type con fight commands);
 
     }

@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-abstract class FightCommand : ICommand
+public class FightCommand : MonoBehaviour, ICommand
 {
     public TargetTypes PossibleTargets;
+    public FightCommandTypes _type;
 
     public virtual void Excecute()
     {
