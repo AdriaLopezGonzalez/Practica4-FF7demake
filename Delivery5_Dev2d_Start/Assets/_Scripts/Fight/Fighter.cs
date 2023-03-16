@@ -37,11 +37,14 @@ public class Fighter : Entity
         float realDamage = damage - (BaseDefense + RoundDefense);
         realDamage = Mathf.Max(realDamage, 0);
 
+
         CurrentHealth -= realDamage;
 
         OnChange?.Invoke();
         if (CurrentHealth < 0)
             Die();
+
+        Debug.Log(CurrentHealth);
     }
 
     private void Die()

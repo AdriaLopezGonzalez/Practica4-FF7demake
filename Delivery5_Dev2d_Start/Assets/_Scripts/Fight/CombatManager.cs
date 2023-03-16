@@ -72,7 +72,7 @@ public class CombatManager : MonoBehaviour
     
     private void DoAction(Entity actor, Entity target, FightCommandTypes type)
     {
-        TypeToCommand(type).Excecute();
+        Invoker.AddCommand(TypeToCommand(type, actor, target));
         NextTurn();
     }
 
@@ -112,6 +112,32 @@ public class CombatManager : MonoBehaviour
         {
             case FightCommandTypes.Attack:
                 doingCommand = new AttackCommand();
+                break;
+            case FightCommandTypes.BoostAttack:
+                doingCommand = new BoostAttackCommand();
+                break;
+            case FightCommandTypes.BoostDefense:
+                doingCommand = new BoostDefenseCommand();
+                break;
+            case FightCommandTypes.Heal:
+                doingCommand = new HealCommand();
+                break;
+            default:
+                doingCommand = new ShieldCommand();
+                break;
+        }
+
+        return doingCommand;
+    }
+
+    private FightCommand TypeToCommand(FightCommandTypes type, Entity actor, Entity target)
+    {
+        FightCommand doingCommand;
+
+        switch (type)
+        {
+            case FightCommandTypes.Attack:
+                doingCommand = new AttackCommand(actor,target);
                 break;
             case FightCommandTypes.BoostAttack:
                 doingCommand = new BoostAttackCommand();
