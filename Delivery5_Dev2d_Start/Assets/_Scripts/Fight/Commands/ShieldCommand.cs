@@ -22,10 +22,10 @@ class ShieldCommand : FightCommand
 
     public override void Excecute()
     {
+        targetActor.AddDefense(5);
     }
 
     public override void Undo()
     {
     }
-    // hacer un constructor aqui de fight command
 }

@@ -78,7 +78,14 @@ public class CombatManager : MonoBehaviour
 
     private void Undo()
     {
-        
+        if(Invoker.CanUndo())
+        {
+            Invoker.Undo();
+            EntityManager.SetPreviousEntity();
+            Fighter currentFighter = EntityManager.ActiveEntity as Fighter;
+            Stats.SetEntity(currentFighter);
+            ActionButtonController.SetFighterButtons(currentFighter);
+        }
     }
 
 
