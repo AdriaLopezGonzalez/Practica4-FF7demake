@@ -28,5 +28,5 @@ class BoostAttackCommand : FightCommand
     public override void Undo()
     {
     }
-    // hacer un constructor aqui de fight command
+
 }
