@@ -25,7 +25,6 @@ class AttackCommand : FightCommand
 
     public override void Excecute()
     {
-        Debug.Log("PITOOOOOO");
         targetActor.TakeDamage(ownActor.Attack);
     }
 
