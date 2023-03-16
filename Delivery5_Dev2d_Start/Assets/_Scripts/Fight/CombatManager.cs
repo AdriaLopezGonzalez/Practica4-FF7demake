@@ -140,16 +140,16 @@ public class CombatManager : MonoBehaviour
                 doingCommand = new AttackCommand(actor,target);
                 break;
             case FightCommandTypes.BoostAttack:
-                doingCommand = new BoostAttackCommand();
+                doingCommand = new BoostAttackCommand(actor, target);
                 break;
             case FightCommandTypes.BoostDefense:
-                doingCommand = new BoostDefenseCommand();
+                doingCommand = new BoostDefenseCommand(actor, target);
                 break;
             case FightCommandTypes.Heal:
-                doingCommand = new HealCommand();
+                doingCommand = new HealCommand(actor, target);
                 break;
             default:
-                doingCommand = new ShieldCommand();
+                doingCommand = new ShieldCommand(actor, target);
                 break;
         }
 
