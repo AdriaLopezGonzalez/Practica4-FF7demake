@@ -24,7 +24,11 @@ class HealCommand : FightCommand
     {
         if(!(targetActor.CurrentHealth + 3 > targetActor.MaxHealth))
         {
-
+            targetActor.CurrentHealth += 3;
+        }
+        else
+        {
+            targetActor.CurrentHealth = targetActor.MaxHealth;
         }
     }
 
