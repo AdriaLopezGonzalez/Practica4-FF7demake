@@ -22,6 +22,7 @@ class BoostDefenseCommand : FightCommand
 
     public override void Excecute()
     {
+        targetActor.AddDefensePermanent(1);
     }
 
     public override void Undo()
