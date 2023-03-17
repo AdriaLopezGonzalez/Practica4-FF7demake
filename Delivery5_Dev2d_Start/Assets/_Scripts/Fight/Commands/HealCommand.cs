@@ -34,5 +34,6 @@ class HealCommand : FightCommand
 
     public override void Undo()
     {
+        targetActor.TakeDamage(3+targetActor.Defense);
     }
 }

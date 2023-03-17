@@ -44,7 +44,7 @@ public class Fighter : Entity
         if (CurrentHealth < 0)
             Die();
 
-        Debug.Log(CurrentHealth);
+        //Debug.Log(CurrentHealth);
     }
 
     private void Die()

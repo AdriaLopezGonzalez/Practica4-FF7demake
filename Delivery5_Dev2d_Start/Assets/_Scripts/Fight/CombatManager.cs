@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CombatManager : MonoBehaviour
 {
@@ -10,6 +7,7 @@ public class CombatManager : MonoBehaviour
     public ChooseTarget TargetChooser;
     public Invoker Invoker;
     public StatsUI Stats;
+    public FighterResetter FighterResetter;
 
     private FightCommandTypes currentCommandType;
 
@@ -27,19 +25,15 @@ public class CombatManager : MonoBehaviour
 
     void StartBattle()
     {
-        Fighter currentFighter = EntityManager.ActiveEntity as Fighter;
-        Stats.SetEntity(currentFighter);
-        ActionButtonController.SetFighterButtons(currentFighter);
+        SetFighter();
     }
 
     public void DoAction(FightCommandTypes commandType)
     {
-        //DENTRO SWITCH
         currentCommandType = commandType;
         ChooseTarget(TypeToCommand(commandType));
-
     }
-    
+
     private void ChooseTarget(FightCommand _currentCommand)
     {
         var targetTypes = _currentCommand.PossibleTargets;
@@ -69,22 +63,21 @@ public class CombatManager : MonoBehaviour
         ActionButtonController.ChooseTarget(EntityManager.ActiveEntity);
         TargetChooser.StartChoose(possibleTargets);
     }
-    
+
     private void DoAction(Entity actor, Entity target, FightCommandTypes type)
     {
         Invoker.AddCommand(TypeToCommand(type, actor, target));
         NextTurn();
+
     }
 
     private void Undo()
     {
-        if(Invoker.CanUndo())
+        if (Invoker.CanUndo())
         {
             Invoker.Undo();
             EntityManager.SetPreviousEntity();
-            Fighter currentFighter = EntityManager.ActiveEntity as Fighter;
-            Stats.SetEntity(currentFighter);
-            ActionButtonController.SetFighterButtons(currentFighter);
+            SetFighter();
         }
     }
 
@@ -92,14 +85,12 @@ public class CombatManager : MonoBehaviour
     public void NextTurn()
     {
         EntityManager.SetNextEntity();
-        Fighter currentFighter = EntityManager.ActiveEntity as Fighter;
-        Stats.SetEntity(currentFighter);
-        ActionButtonController.SetFighterButtons(currentFighter);
+        SetFighter();
     }
 
     internal void TargetChosen(ISelectable entity)
     {
-        if(!(entity is Entity))
+        if (!(entity is Entity))
         {
             Debug.LogError("Selected is not entity");
             return;
@@ -108,7 +99,7 @@ public class CombatManager : MonoBehaviour
         {
             DoAction(EntityManager.ActiveEntity, entity as Entity, currentCommandType);
         }
-     
+
     }
 
     private FightCommand TypeToCommand(FightCommandTypes type)
@@ -144,7 +135,7 @@ public class CombatManager : MonoBehaviour
         switch (type)
         {
             case FightCommandTypes.Attack:
-                doingCommand = new AttackCommand(actor,target);
+                doingCommand = new AttackCommand(actor, target);
                 break;
             case FightCommandTypes.BoostAttack:
                 doingCommand = new BoostAttackCommand(actor, target);
@@ -157,9 +148,20 @@ public class CombatManager : MonoBehaviour
                 break;
             default:
                 doingCommand = new ShieldCommand(actor, target);
+                FighterResetter.AddReset(target as Fighter);
                 break;
         }
 
         return doingCommand;
+    }
+
+    private void SetFighter()
+    {
+        Fighter currentFighter = EntityManager.ActiveEntity as Fighter;
+        Stats.SetEntity(currentFighter);
+        ActionButtonController.SetFighterButtons(currentFighter);
+
+        FighterResetter.NextTurn();
+        FighterResetter.CheckReset();
     }
 }

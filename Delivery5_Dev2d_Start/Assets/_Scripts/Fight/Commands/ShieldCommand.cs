@@ -27,5 +27,6 @@ class ShieldCommand : FightCommand
 
     public override void Undo()
     {
+        targetActor.AddDefense(-5);
     }
 }

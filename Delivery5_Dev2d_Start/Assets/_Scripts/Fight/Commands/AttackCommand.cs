@@ -30,6 +30,16 @@ class AttackCommand : FightCommand
 
     public override void Undo()
     {
+        if (!(targetActor.CurrentHealth + (ownActor.Attack - targetActor.Defense) > targetActor.MaxHealth))
+        {
+            targetActor.CurrentHealth += (ownActor.Attack - targetActor.Defense);
+        }
+        else
+        {
+            targetActor.CurrentHealth = targetActor.MaxHealth;
+        }
+
+        Debug.Log(targetActor.name + " Life: " + targetActor.CurrentHealth);
 
     }
 }

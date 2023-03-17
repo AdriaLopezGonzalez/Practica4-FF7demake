@@ -813,7 +813,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 68.4
+  m_fontSize: 49.9
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1219,7 +1219,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 68.4
+  m_fontSize: 49.9
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1483,7 +1483,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 68.4
+  m_fontSize: 49.9
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1850,6 +1850,7 @@ GameObject:
   - component: {fileID: 2062942663}
   - component: {fileID: 2062942665}
   - component: {fileID: 2062942666}
+  - component: {fileID: 2062942667}
   m_Layer: 0
   m_Name: CombatManager
   m_TagString: Untagged
@@ -1874,6 +1875,7 @@ MonoBehaviour:
   TargetChooser: {fileID: 947129937}
   Invoker: {fileID: 2062942666}
   Stats: {fileID: 1964089879}
+  FighterResetter: {fileID: 2062942667}
 --- !u!4 &2062942664
 Transform:
   m_ObjectHideFlags: 0
@@ -1914,6 +1916,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ExecuteInmedaite: 1
+--- !u!114 &2062942667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2062942662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d954f2ce4691c074498ea4e152815cc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EntityManager: {fileID: 385116441}
 --- !u!1 &2147182624
 GameObject:
   m_ObjectHideFlags: 0
