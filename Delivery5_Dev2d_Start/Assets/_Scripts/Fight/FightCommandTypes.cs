@@ -2,20 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum FightCommandTypes
+namespace ReflectionFactory
 {
-    Attack,
-    BoostAttack,
-    BoostDefense,
-    Heal,
-    Shield,
-}
+    public enum FightCommandTypes
+    {
+        Attack,
+        BoostAttack,
+        BoostDefense,
+        Heal,
+        Shield,
+        StrongAttack,
+    }
 
-public enum TargetTypes
-{
-    Enemy,
-    Friend,
-    Self,
-    FriendNotSelf,
+    public enum TargetTypes
+    {
+        Enemy,
+        Friend,
+        Self,
+        FriendNotSelf,
 
+    }
 }

@@ -2,16 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-abstract class FightCommand : ICommand
+namespace ReflectionFactory
 {
-    public TargetTypes PossibleTargets;
-    public FightCommandTypes _type;
-
-    public virtual void Excecute()
+    public abstract class FightCommand : ICommand
     {
-    }
+        public TargetTypes PossibleTargets;
+        public FightCommandTypes _type;
 
-    public virtual void Undo()
-    {
+        public Fighter ownActor;
+        public Fighter targetActor;
+
+        public bool hasOneTurnEffect;
+
+        public FightCommand() { }
+
+        public abstract void Excecute();
+
+        public abstract void Undo();
+
     }
 }

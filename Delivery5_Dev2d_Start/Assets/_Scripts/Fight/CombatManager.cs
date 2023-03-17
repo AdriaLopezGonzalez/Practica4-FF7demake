@@ -1,167 +1,126 @@
 ﻿using UnityEngine;
 
-public class CombatManager : MonoBehaviour
+namespace ReflectionFactory
 {
-    public EntityManager EntityManager;
-    public ActionButtonController ActionButtonController;
-    public ChooseTarget TargetChooser;
-    public Invoker Invoker;
-    public StatsUI Stats;
-    public FighterResetter FighterResetter;
-
-    private FightCommandTypes currentCommandType;
-
-    // Start is called before the first frame update
-    void Start()
+    public class CombatManager : MonoBehaviour
     {
-        //_factory = new CommandFactory();
-        StartBattle();
-    }
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Z))
-            Undo();
-    }
+        public EntityManager EntityManager;
+        public ActionButtonController ActionButtonController;
+        public ChooseTarget TargetChooser;
+        public Invoker Invoker;
+        public StatsUI Stats;
+        private CommandFactory _factory;
+        public FighterResetter FighterResetter;
 
-    void StartBattle()
-    {
-        SetFighter();
-    }
+        private FightCommandTypes currentCommandType;
 
-    public void DoAction(FightCommandTypes commandType)
-    {
-        currentCommandType = commandType;
-        ChooseTarget(TypeToCommand(commandType));
-    }
-
-    private void ChooseTarget(FightCommand _currentCommand)
-    {
-        var targetTypes = _currentCommand.PossibleTargets;
-
-        Entity[] possibleTargets;
-
-        switch (targetTypes)
+        // Start is called before the first frame update
+        void Awake()
         {
-            case TargetTypes.Enemy:
-                possibleTargets = EntityManager.Enemies;
-                break;
-            case TargetTypes.Friend:
-                possibleTargets = EntityManager.Friends;
-                break;
-            case TargetTypes.FriendNotSelf:
-                possibleTargets = EntityManager.FriendsNotSelf;
-                break;
-            case TargetTypes.Self:
-                possibleTargets = new Entity[1];
-                possibleTargets[0] = EntityManager.ActiveEntity;
-                break;
-
-            default:
-                possibleTargets = EntityManager.Enemies;
-                break;
+            _factory = new CommandFactory();
+            StartBattle();
         }
-        ActionButtonController.ChooseTarget(EntityManager.ActiveEntity);
-        TargetChooser.StartChoose(possibleTargets);
-    }
-
-    private void DoAction(Entity actor, Entity target, FightCommandTypes type)
-    {
-        Invoker.AddCommand(TypeToCommand(type, actor, target));
-        NextTurn();
-
-    }
-
-    private void Undo()
-    {
-        if (Invoker.CanUndo())
+        private void Update()
         {
-            Invoker.Undo();
-            EntityManager.SetPreviousEntity();
+            if (Input.GetKeyDown(KeyCode.Z))
+                Undo();
+        }
+
+        void StartBattle()
+        {
             SetFighter();
         }
-    }
 
-
-    public void NextTurn()
-    {
-        EntityManager.SetNextEntity();
-        SetFighter();
-    }
-
-    internal void TargetChosen(ISelectable entity)
-    {
-        if (!(entity is Entity))
+        public void DoAction(FightCommandTypes commandType)
         {
-            Debug.LogError("Selected is not entity");
-            return;
-        }
-        else
-        {
-            DoAction(EntityManager.ActiveEntity, entity as Entity, currentCommandType);
+            
+            var thisCommand = _factory.GetCommand(commandType);
+            currentCommandType = thisCommand._type;
+            ChooseTarget(thisCommand);
+
         }
 
-    }
-
-    private FightCommand TypeToCommand(FightCommandTypes type)
-    {
-        FightCommand doingCommand;
-
-        switch (type)
+        private void ChooseTarget(FightCommand _currentCommand)
         {
-            case FightCommandTypes.Attack:
-                doingCommand = new AttackCommand();
-                break;
-            case FightCommandTypes.BoostAttack:
-                doingCommand = new BoostAttackCommand();
-                break;
-            case FightCommandTypes.BoostDefense:
-                doingCommand = new BoostDefenseCommand();
-                break;
-            case FightCommandTypes.Heal:
-                doingCommand = new HealCommand();
-                break;
-            default:
-                doingCommand = new ShieldCommand();
-                break;
+            var targetTypes = _currentCommand.PossibleTargets;
+
+            Entity[] possibleTargets;
+
+            switch (targetTypes)
+            {
+                case TargetTypes.Enemy:
+                    possibleTargets = EntityManager.Enemies;
+                    break;
+                case TargetTypes.Friend:
+                    possibleTargets = EntityManager.Friends;
+                    break;
+                case TargetTypes.FriendNotSelf:
+                    possibleTargets = EntityManager.FriendsNotSelf;
+                    break;
+                case TargetTypes.Self:
+                    possibleTargets = new Entity[1];
+                    possibleTargets[0] = EntityManager.ActiveEntity;
+                    break;
+
+                default:
+                    possibleTargets = EntityManager.Enemies;
+                    break;
+            }
+            ActionButtonController.ChooseTarget(EntityManager.ActiveEntity);
+            TargetChooser.StartChoose(possibleTargets);
         }
 
-        return doingCommand;
-    }
-
-    private FightCommand TypeToCommand(FightCommandTypes type, Entity actor, Entity target)
-    {
-        FightCommand doingCommand;
-
-        switch (type)
+        private void DoAction(Entity actor, Entity target, FightCommandTypes type)
         {
-            case FightCommandTypes.Attack:
-                doingCommand = new AttackCommand(actor, target);
-                break;
-            case FightCommandTypes.BoostAttack:
-                doingCommand = new BoostAttackCommand(actor, target);
-                break;
-            case FightCommandTypes.BoostDefense:
-                doingCommand = new BoostDefenseCommand(actor, target);
-                break;
-            case FightCommandTypes.Heal:
-                doingCommand = new HealCommand(actor, target);
-                break;
-            default:
-                doingCommand = new ShieldCommand(actor, target);
+            var currentCommand = _factory.GetCommand(actor, target, type);
+            if (currentCommand.hasOneTurnEffect)
+            {
                 FighterResetter.AddReset(target as Fighter);
-                break;
+            }
+            Invoker.AddCommand(currentCommand);
+            NextTurn();
+
         }
 
-        return doingCommand;
-    }
+        private void Undo()
+        {
+            if (Invoker.CanUndo())
+            {
+                Invoker.Undo();
+                EntityManager.SetPreviousEntity();
+                SetFighter();
+            }
+        }
 
-    private void SetFighter()
-    {
-        Fighter currentFighter = EntityManager.ActiveEntity as Fighter;
-        Stats.SetEntity(currentFighter);
-        ActionButtonController.SetFighterButtons(currentFighter);
 
-        FighterResetter.NextTurn();
-        FighterResetter.CheckReset();
+        public void NextTurn()
+        {
+            EntityManager.SetNextEntity();
+            SetFighter();
+        }
+
+        internal void TargetChosen(ISelectable entity)
+        {
+            if (!(entity is Entity))
+            {
+                Debug.LogError("Selected is not entity");
+                return;
+            }
+            else
+            {
+                DoAction(EntityManager.ActiveEntity, entity as Entity, currentCommandType);
+            }
+
+        }
+
+        private void SetFighter()
+        {
+            Fighter currentFighter = EntityManager.ActiveEntity as Fighter;
+            Stats.SetEntity(currentFighter);
+            ActionButtonController.SetFighterButtons(currentFighter);
+
+            FighterResetter.NextTurn();
+            FighterResetter.CheckReset();
+        }
     }
 }

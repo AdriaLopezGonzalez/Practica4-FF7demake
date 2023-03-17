@@ -1329,7 +1329,7 @@ MonoBehaviour:
   Team: 1
   CurrentHealth: 0
   MaxHealth: 100
-  PossibleCommands: 04000000
+  PossibleCommands: 0400000005000000
 --- !u!212 &1612530095
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1986,6 +1986,7 @@ MonoBehaviour:
     type: 3}
   PossibleCommands: 0000000001000000
   CombatManager: {fileID: 2062942663}
+  _canvasGroup: {fileID: 2147182630}
 --- !u!114 &2147182627
 MonoBehaviour:
   m_ObjectHideFlags: 0

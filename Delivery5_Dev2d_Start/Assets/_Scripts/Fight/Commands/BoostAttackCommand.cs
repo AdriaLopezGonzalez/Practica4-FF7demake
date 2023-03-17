@@ -2,32 +2,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-class BoostAttackCommand : FightCommand
+namespace ReflectionFactory
 {
-    Fighter ownActor;
-    Fighter targetActor;
-    public BoostAttackCommand()
+    class BoostAttackCommand : FightCommand
     {
-        _type = FightCommandTypes.BoostAttack;
-        PossibleTargets = TargetTypes.Self;
-    }
+        public BoostAttackCommand()
+        {
+            _type = FightCommandTypes.BoostAttack;
+            PossibleTargets = TargetTypes.Self;
+            hasOneTurnEffect = false;
+        }
 
-    public BoostAttackCommand(Entity actor, Entity target)
-    {
-        _type = FightCommandTypes.BoostAttack;
-        PossibleTargets = TargetTypes.Self;
-        ownActor = actor as Fighter;
-        targetActor = target as Fighter;
-    }
+        public BoostAttackCommand(Entity actor, Entity target)
+        {
+            _type = FightCommandTypes.BoostAttack;
+            PossibleTargets = TargetTypes.Self;
+            hasOneTurnEffect = false;
 
-    public override void Excecute()
-    {
-        targetActor.AddAttackPermanent(1);
-    }
+            ownActor = actor as Fighter;
+            targetActor = target as Fighter;
+        }
 
-    public override void Undo()
-    {
-        targetActor.AddAttackPermanent(-1);
-    }
+        public override void Excecute()
+        {
+            targetActor.AddAttackPermanent(1);
+        }
 
+        public override void Undo()
+        {
+            targetActor.AddAttackPermanent(-1);
+        }
+
+    }
 }

@@ -2,31 +2,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-class ShieldCommand : FightCommand
+namespace ReflectionFactory
 {
-    Fighter ownActor;
-    Fighter targetActor;
-    public ShieldCommand()
+    class ShieldCommand : FightCommand
     {
-        _type = FightCommandTypes.Shield;
-        PossibleTargets = TargetTypes.FriendNotSelf;
-    }
+        public ShieldCommand()
+        {
+            _type = FightCommandTypes.Shield;
+            PossibleTargets = TargetTypes.FriendNotSelf;
+            hasOneTurnEffect = true;
+        }
 
-    public ShieldCommand(Entity actor, Entity target)
-    {
-        _type = FightCommandTypes.Shield;
-        PossibleTargets = TargetTypes.FriendNotSelf;
-        ownActor = actor as Fighter;
-        targetActor = target as Fighter;
-    }
+        public ShieldCommand(Entity actor, Entity target)
+        {
+            _type = FightCommandTypes.Shield;
+            PossibleTargets = TargetTypes.FriendNotSelf;
+            hasOneTurnEffect = true;
 
-    public override void Excecute()
-    {
-        targetActor.AddDefense(5);
-    }
+            ownActor = actor as Fighter;
+            targetActor = target as Fighter;
+        }
 
-    public override void Undo()
-    {
-        targetActor.AddDefense(-5);
+        public override void Excecute()
+        {
+            targetActor.AddDefense(5);
+        }
+
+        public override void Undo()
+        {
+            targetActor.AddDefense(-5);
+        }
     }
 }

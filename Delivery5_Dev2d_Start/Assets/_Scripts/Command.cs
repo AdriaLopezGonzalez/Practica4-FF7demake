@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Command : ICommand
+namespace ReflectionFactory
 {
-    protected Entity _entity;
-
-
-    protected Command(Entity entity)
+    public abstract class Command : ICommand
     {
-        _entity = entity;
-    }
+        protected Entity _entity;
 
-    public abstract void Excecute();
-    public abstract void Undo();
+        protected Command(Entity entity)
+        {
+            _entity = entity;
+        }
+
+        public abstract void Excecute();
+        public abstract void Undo();
+    }
 }

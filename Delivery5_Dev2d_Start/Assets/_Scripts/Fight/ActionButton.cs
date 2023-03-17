@@ -5,38 +5,41 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ActionButton : MonoBehaviour, IPointerClickHandler
+namespace ReflectionFactory
 {
-    private Color _color;
-    private Image _image;
-    private TextMeshProUGUI _text;
-
-    private ActionButtonController _colorButtonController;
-    FightCommandTypes _type;
-
-    public void OnPointerClick(PointerEventData eventData)
+    public class ActionButton : MonoBehaviour, IPointerClickHandler
     {
-        _colorButtonController.OnButtonPressed(_type);
-       
-    }
-    void Awake()
-    {
-        _image = GetComponent<Image>();
-        _text = GetComponentInChildren<TextMeshProUGUI>();
-    }
-    void Start()
-    {
-        
-    }
+        private Color _color;
+        private Image _image;
+        private TextMeshProUGUI _text;
 
-    public void Init(FightCommandTypes type, ActionButtonController colorButtonController)
-    {
-        _color = Color.white;
-        _image.color = _color;
-        _type = type;
-         _colorButtonController = colorButtonController;
-        _text.text = type.ToString(); ;
-    }
+        private ActionButtonController _colorButtonController;
+        FightCommandTypes _type;
 
-  
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            _colorButtonController.OnButtonPressed(_type);
+
+        }
+        void Awake()
+        {
+            _image = GetComponent<Image>();
+            _text = GetComponentInChildren<TextMeshProUGUI>();
+        }
+        void Start()
+        {
+
+        }
+
+        public void Init(FightCommandTypes type, ActionButtonController colorButtonController)
+        {
+            _color = Color.white;
+            _image.color = _color;
+            _type = type;
+            _colorButtonController = colorButtonController;
+            _text.text = type.ToString(); ;
+        }
+
+
+    }
 }

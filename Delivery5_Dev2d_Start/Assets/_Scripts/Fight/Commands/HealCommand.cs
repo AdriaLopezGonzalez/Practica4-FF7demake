@@ -2,38 +2,42 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-class HealCommand : FightCommand
+namespace ReflectionFactory
 {
-    Fighter ownActor;
-    Fighter targetActor;
-    public HealCommand()
+    class HealCommand : FightCommand
     {
-        _type = FightCommandTypes.Heal;
-        PossibleTargets = TargetTypes.Friend;
-    }
-
-    public HealCommand(Entity actor, Entity target)
-    {
-        _type = FightCommandTypes.Heal;
-        PossibleTargets = TargetTypes.Friend;
-        ownActor = actor as Fighter;
-        targetActor = target as Fighter;
-    }
-
-    public override void Excecute()
-    {
-        if(!(targetActor.CurrentHealth + 3 > targetActor.MaxHealth))
+        public HealCommand()
         {
-            targetActor.CurrentHealth += 3;
+            _type = FightCommandTypes.Heal;
+            PossibleTargets = TargetTypes.Friend;
+            hasOneTurnEffect = false;
         }
-        else
-        {
-            targetActor.CurrentHealth = targetActor.MaxHealth;
-        }
-    }
 
-    public override void Undo()
-    {
-        targetActor.TakeDamage(3+targetActor.Defense);
+        public HealCommand(Entity actor, Entity target)
+        {
+            _type = FightCommandTypes.Heal;
+            PossibleTargets = TargetTypes.Friend;
+            hasOneTurnEffect = false;
+
+            ownActor = actor as Fighter;
+            targetActor = target as Fighter;
+        }
+
+        public override void Excecute()
+        {
+            if (!(targetActor.CurrentHealth + 3 > targetActor.MaxHealth))
+            {
+                targetActor.CurrentHealth += 3;
+            }
+            else
+            {
+                targetActor.CurrentHealth = targetActor.MaxHealth;
+            }
+        }
+
+        public override void Undo()
+        {
+            targetActor.TakeDamage(3 + targetActor.Defense);
+        }
     }
 }

@@ -3,44 +3,47 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class StatsUI : MonoBehaviour
+namespace ReflectionFactory
 {
-    public TextMeshProUGUI Name;
-    public TextMeshProUGUI HealthPoints;
-    public TextMeshProUGUI AttackPoints;
-    public TextMeshProUGUI DefensePoints;
-
-    private Fighter _fighter;
-    // Start is called before the first frame update
-    void OnEnable()
+    public class StatsUI : MonoBehaviour
     {
-        Fighter.OnChange += OnStatsChange;
-        ChooseTarget.OnSelected += SetEntity;
-    }
+        public TextMeshProUGUI Name;
+        public TextMeshProUGUI HealthPoints;
+        public TextMeshProUGUI AttackPoints;
+        public TextMeshProUGUI DefensePoints;
 
-    void OnDisable()
-    {
-        Fighter.OnChange -= OnStatsChange;
-        ChooseTarget.OnSelected -= SetEntity;
-    }
+        private Fighter _fighter;
+        // Start is called before the first frame update
+        void OnEnable()
+        {
+            Fighter.OnChange += OnStatsChange;
+            ChooseTarget.OnSelected += SetEntity;
+        }
 
-    // Update is called once per frame
-    public void SetEntity(Fighter fighter)
-    {
-        _fighter = fighter;
-        UpdateStats(fighter);
-    }
+        void OnDisable()
+        {
+            Fighter.OnChange -= OnStatsChange;
+            ChooseTarget.OnSelected -= SetEntity;
+        }
 
-    private void OnStatsChange()
-    {
-        UpdateStats(_fighter);
-    }
+        // Update is called once per frame
+        public void SetEntity(Fighter fighter)
+        {
+            _fighter = fighter;
+            UpdateStats(fighter);
+        }
 
-    void UpdateStats(Fighter fighter)
-    {
-        Name.text = fighter.transform.name;
-        HealthPoints.text = "HP: "+fighter.CurrentHealth.ToString();
-        AttackPoints.text = "ATT: " + fighter.Attack.ToString();
-        DefensePoints.text = "DEF: " + fighter.Defense.ToString();
+        private void OnStatsChange()
+        {
+            UpdateStats(_fighter);
+        }
+
+        void UpdateStats(Fighter fighter)
+        {
+            Name.text = fighter.transform.name;
+            HealthPoints.text = "HP: " + fighter.CurrentHealth.ToString();
+            AttackPoints.text = "ATT: " + fighter.Attack.ToString();
+            DefensePoints.text = "DEF: " + fighter.Defense.ToString();
+        }
     }
 }
